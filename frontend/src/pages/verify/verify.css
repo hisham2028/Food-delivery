@@ -1,0 +1,28 @@
+.verify {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.spinner {
+    width: 100px;
+    height: 100px;
+    border: 5px solid #bdbdbd;
+    border-top-color: #ff4c24; /* Your theme color */
+    border-radius: 50%;
+    animation: rotate 1s infinite linear;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.verify p {
+    font-size: 18px;
+    color: #555;
+    font-weight: 500;
+}

@@ -1,0 +1,421 @@
+/* Navbar Container */
+/*.navbar {
+  width: 90%; 
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 15px 5%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px var(--shadow-sm);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-bottom: 1px solid var(--border-light);
+}*/
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 3%; /* Adjust horizontal padding to align with your content */
+  background-color: white;
+  width: 100%;
+  position: fixed; /* Keep it at the top */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: all 0.4s ease-in-out; /* This makes the "shrink" smooth */
+  border-radius: 0; /* Flat edges at the top */
+}
+
+/* Sticky State - Solid White Background */
+.navbar.sticky {
+  top: 20px;
+  width: 90%;
+  left: 5%;
+  padding: 10px 40px;
+  border-radius: 50px;
+  
+  /* Solid White Background */
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  
+  /* Solid Border & Shadow */
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+  
+  transition: all 0.3s ease-in-out;
+}
+
+/* Enhancing Text Contrast on Sticky */
+.navbar.sticky a, 
+.navbar.sticky .nav-link {
+  color: #1a1a1a !important; /* Deep charcoal for maximum contrast on light glass */
+  font-weight: 600;           /* Slightly bolder to keep it legible over the blur */
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5); /* Subtle "lift" effect */
+}
+
+/* Keeping the Logo exactly the same */
+.navbar.sticky .logo {
+  width: 140px; /* Reverts any previous shrinking instructions */
+  filter: none; /* Keeps original brand colors/appearance */
+}
+
+/* Logo */
+.navbar .logo {
+  width: 140px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar .logo:hover {
+  transform: scale(1.03);
+}
+
+/* Menu List */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Menu Links */
+.navbar-menu a {
+  position: relative;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+/* Menu Item Hover & Active Effects */
+.navbar-menu a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background: var(--gradient-primary);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-menu a:hover::before,
+.navbar-menu .active::before {
+  width: 80%;
+}
+
+.navbar-menu a:hover,
+.navbar-menu .active {
+  color: var(--primary-600);
+}
+
+/* Right Side Elements */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Search Bar */
+.navbar-search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-search-container input {
+  width: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: var(--bg-secondary);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+  height: 40px;
+  font-size: 14px;
+  padding: 0 15px;
+  color: var(--text-primary);
+}
+
+.navbar-search-container.active input {
+  width: 200px;
+  opacity: 1;
+  padding: 0 45px 0 15px;
+  border: 1px solid var(--border-light);
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  color: var(--text-secondary);
+}
+
+.search-icon:hover {
+  transform: scale(1.1);
+  color: var(--primary-600);
+}
+
+/* Cart Icon */
+.navbar-cart-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.navbar-cart-icon img {
+  width: 35px;
+  height: 35px;
+}
+
+.navbar-cart-icon:hover {
+  background: var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.navbar-cart-icon .dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-500);
+  border-radius: 50%;
+}
+
+/* Buttons */
+.navbar button {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow-md);
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.navbar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow-lg);
+}
+
+/* Profile Dropdown */
+.navbar-profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-primary);
+  min-width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px var(--shadow-lg);
+  padding: 10px 0;
+  margin-top: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid var(--border-light);
+}
+
+.navbar-profile:hover .nav-profile-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-profile-dropdown li {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-profile-dropdown li:hover {
+  background: var(--bg-secondary);
+  color: var(--primary-600);
+  padding-left: 25px;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.mobile-menu-toggle span {
+  width: 100%;
+  height: 3px;
+  background: var(--text-primary);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger animation */
+.mobile-menu-toggle.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  /* Disable sticky behavior in responsive view */
+  .navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    padding: 12px 4% !important;
+    border-radius: 0 !important;
+    background: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .navbar.sticky {
+    top: 0 !important;
+    width: 100% !important;
+    left: 0 !important;
+    padding: 12px 4% !important;
+    border-radius: 0 !important;
+    background: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1000;
+  }
+
+  .navbar-menu.active {
+    right: 0;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .navbar-menu a {
+    font-size: 18px;
+    padding: 15px 0;
+  }
+
+  .navbar-right {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: 12px 4%;
+  }
+
+  .navbar .logo {
+    width: 120px;
+  }
+
+  .navbar button {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+
+  .navbar-search-container.active input {
+    width: 160px;
+  }
+
+  .navbar-search-container {
+    display: none;
+  }
+}
+
+.navbar-search-icon {
+    position: relative;
+}
+
+.navbar-search-icon .dot {
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: tomato; /* Or your theme color */
+    border-radius: 5px;
+    top: -8px;
+    right: -8px;
+}
+
+/* Menu page specific - disable sticky navbar */
+.menu-page .navbar,
+.menu-page .navbar.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  padding: 10px 3% !important;
+  border-radius: 0 !important;
+  background: white !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}

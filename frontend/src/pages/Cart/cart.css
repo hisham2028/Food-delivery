@@ -1,0 +1,160 @@
+/* ===== 0. Global tokens ===== */
+:root {
+  --primary: var(--primary-500);
+  --primary-dark: var(--primary-600);
+  --bg: var(--bg-primary);
+  --text: var(--text-primary);
+  --grey: var(--text-secondary);
+  --line: var(--border-light);
+  --radius: 8px;
+  --transition: .25s ease-in-out;
+}
+
+.cart {
+  margin-top: 80px;
+  padding: 0 4vw;
+}
+
+/* ===== 1. Grid (unchanged) ===== */
+.cart-items-title {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  gap: 8px;
+  color: var(--grey);
+  font-size: clamp(11px, 1.2vw, 14px);
+  letter-spacing: .02em;
+}
+
+.cart-items-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.cross {
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--grey);
+  transition: var(--transition);
+}
+.cross:hover {
+  color: var(--primary);
+  transform: scale(1.2);
+}
+
+/* ===== 2. Bottom section – card stack on mobile ===== */
+.cart-bottom {
+  margin-top: clamp(40px, 6vh, 80px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 40px);
+}
+
+.cart-total,
+.cart-promocode {
+  flex: 1 1 280px; /* grow, shrink, base */
+  background: var(--bg-primary);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.cart-total-details {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  color: var(--grey);
+}
+.cart-total-details b {
+  color: var(--text);
+}
+
+.cart-total button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.cart-total button:hover {
+  background: var(--primary-dark);
+}
+
+/* ===== 3. Promo code bar ===== */
+.cart-promocode-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.cart-promocode-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+.cart-promocode-input button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--neutral-700);
+  color: var(--text-inverse);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.cart-promocode-input button:hover {
+  background: var(--neutral-800);
+}
+
+/* ===== 4. Micro-typography ===== */
+.cart-promocode p,
+.cart-total p {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--grey);
+}
+
+/* ===== 5. Responsive ≤ 750 px ===== */
+@media (max-width: 750px) {
+  /* grid becomes 3 rows: img+name | qty | price | trash */
+  .cart-items-title {
+    grid-template-columns: 60px 1fr auto auto;
+    gap: 12px;
+  }
+  .cart-items-title p:nth-child(3),
+  .cart-items-title p:nth-child(4),
+  .cart-items-title p:nth-child(5) {
+    display: none; /* hide desktop headers */
+  }
+  .cart-items-item {
+    display: contents; /* let children align */
+  }
+  .cart-items-item img {
+    grid-column: 1;
+  }
+  .cart-items-item p:nth-child(2) {
+    grid-column: 2 / -1;
+    font-weight: 500;
+  }
+  .cart-items-item p:nth-child(4) {
+    grid-column: 3;
+  }
+  .cart-items-item p:nth-child(5) {
+    grid-column: 4;
+  }
+  .cross {
+    grid-column: 4;
+    justify-self: end;
+  }
+
+  /* bottom section already stacks thanks to flex-wrap */
+}
