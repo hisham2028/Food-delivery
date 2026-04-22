@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import './Fooditem.css';
 import { assets } from '../../assets/assets';
 import { useStore } from '../../context/StoreContext';
+import { resolveFoodImageUrl } from '../../utils/imageUrl';
 
 function FoodItem({ id, name, price, description, image }) {
     const { cartItems = {}, addToCart, removeFromCart, url } = useStore();
     const quantity = (cartItems && cartItems[id]) || 0;
+    const imageUrl = resolveFoodImageUrl(image, url);
 
     return (
         <div className='food-item'>
             <div className='food-item-img-container'>
-                <img className='food-item-image' src={url + "/images/" + image} alt={name} />   
+                <img className='food-item-image' src={imageUrl} alt={name} />   
                     {quantity === 0 ? (
                     <button 
                         className='food-item-add-btn'

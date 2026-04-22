@@ -45,6 +45,11 @@ describe('PlaceOrder Page', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/cart');
   });
 
+  test('redirects to /cart when user is not signed in', () => {
+    renderWithContext({ token: '' });
+    expect(mockNavigate).toHaveBeenCalledWith('/cart');
+  });
+
   // ─── Delivery Information form fields ─────────────────────
   test('renders all delivery information fields', () => {
     renderWithContext();

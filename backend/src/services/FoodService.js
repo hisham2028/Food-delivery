@@ -12,21 +12,58 @@ class FoodService {
     this.foodModel = foodModel || FoodModel;
   }
 
+  _resolveStoredImagePath(imageFile) {
+    if (!imageFile) return null;
+    return imageFile.path || imageFile.secure_url || imageFile.url || imageFile.filename || null;
+  }
+
+  _toPlain(food) {
+    if (!food) return food;
+    return typeof food.toObject === 'function' ? food.toObject() : food;
+  }
+
+  _normalizeImageForClient(image) {
+    if (!image) return image;
+
+    if (/^https?:\/\//i.test(image)) {
+      return image;
+    }
+
+    // Supports legacy records where Cloudinary public_id was stored as image.
+    if (image.includes('/') && process.env.CLOUDINARY_CLOUD_NAME) {
+      return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${image}`;
+    }
+
+    return image;
+  }
+
+  _normalizeFoodForClient(food) {
+    const plain = this._toPlain(food);
+    if (!plain) return plain;
+
+    return {
+      ...plain,
+      image: this._normalizeImageForClient(plain.image)
+    };
+  }
+
   async addFood(foodData, imageFile) {
     if (!foodData.name || !foodData.price || !imageFile) {
       throw new Error('Name, price, and image are required');
     }
+
+    const storedImagePath = this._resolveStoredImagePath(imageFile);
 
     const newFood = await this.foodModel.create({
       name: foodData.name,
       description: foodData.description || '',
       price: Number(foodData.price),
       category: foodData.category || 'other',
-      image: imageFile.filename,
+      image: storedImagePath,
       isAvailable: foodData.isAvailable !== undefined ? foodData.isAvailable : true
     });
 
-    return newFood;
+    return this._normalizeFoodForClient(newFood);
   }
 
   async getAllFoods(filters = {}) {
@@ -46,7 +83,8 @@ class FoodService {
       skip: filters.skip
     };
 
-    return await this.foodModel.findAll(query, options);
+    const foods = await this.foodModel.findAll(query, options);
+    return foods.map((food) => this._normalizeFoodForClient(food));
   }
 
   async getFoodById(foodId) {
@@ -54,14 +92,15 @@ class FoodService {
     if (!food) {
       throw new Error('Food item not found');
     }
-    return food;
+    return this._normalizeFoodForClient(food);
   }
 
   async searchFoods(searchTerm) {
     if (!searchTerm || searchTerm.trim().length === 0) {
       return [];
     }
-    return await this.foodModel.search(searchTerm);
+    const foods = await this.foodModel.search(searchTerm);
+    return foods.map((food) => this._normalizeFoodForClient(food));
   }
 
   async updateFood(foodId, updateData, imageFile) {
@@ -74,14 +113,15 @@ class FoodService {
 
     if (imageFile) {
       await this._deleteImage(food.image);
-      updates.image = imageFile.filename;
+      updates.image = this._resolveStoredImagePath(imageFile);
     }
 
     if (updates.price) {
       updates.price = Number(updates.price);
     }
 
-    return await this.foodModel.updateById(foodId, updates);
+    const updatedFood = await this.foodModel.updateById(foodId, updates);
+    return this._normalizeFoodForClient(updatedFood);
   }
 
   async deleteFood(foodId) {

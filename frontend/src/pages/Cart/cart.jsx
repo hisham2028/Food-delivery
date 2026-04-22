@@ -2,6 +2,7 @@ import React from 'react';
 import './cart.css';
 import { useStore } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
+import { resolveFoodImageUrl } from '../../utils/imageUrl';
 
 const Cart = () => {
   const { 
@@ -9,7 +10,8 @@ const Cart = () => {
     food_list, 
     removeFromCart, 
     getTotalCartAmount,
-    url 
+    url,
+    token
   } = useStore();
   
   const navigate = useNavigate();
@@ -21,6 +23,14 @@ const Cart = () => {
   const subtotal = getTotalCartAmount();
   const deliveryFee = subtotal === 0 ? 0 : 2; 
   const total = subtotal + deliveryFee;
+
+  const handleProceedToCheckout = () => {
+    if (!token) {
+      alert('Please sign in to proceed to checkout.');
+      return;
+    }
+    navigate('/order');
+  };
 
   return (
     <div className='cart'>
@@ -40,8 +50,7 @@ const Cart = () => {
             return (
               <div key={item._id}>
                 <div className='cart-items-title cart-items-item'>
-                  {/* 3. Updated image path to use backend URL */}
-                  <img src={url + "/images/" + item.image} alt="" />
+                  <img src={resolveFoodImageUrl(item.image, url)} alt="" />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <p>{cartItems[item._id]}</p>
@@ -75,7 +84,7 @@ const Cart = () => {
               <b>${subtotal === 0 ? 0 : total}</b>
             </div>
           </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
+          <button onClick={handleProceedToCheckout}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cart-promocode">
           <div>

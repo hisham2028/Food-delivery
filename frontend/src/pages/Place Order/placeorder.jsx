@@ -28,10 +28,15 @@ const PlaceOrder = () => {
     };
 
     useEffect(() => {
+        if (!token) {
+            navigate('/cart');
+            return;
+        }
+
         if (getTotalCartAmount() === 0) {
             navigate('/cart');
         }
-    }, [getTotalCartAmount, navigate]); 
+    }, [token, getTotalCartAmount, navigate]); 
 
     const placeOrder = async (event) => {
         event.preventDefault();

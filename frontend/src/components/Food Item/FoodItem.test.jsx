@@ -80,6 +80,15 @@ describe('FoodItem Component', () => {
     expect(image).toHaveAttribute('src', 'http://localhost:4000/images/salad.jpg');
   });
 
+  test('uses absolute image URL as-is', () => {
+    const cloudinaryUrl = 'https://res.cloudinary.com/demo/image/upload/v1/food-delivery/salad.jpg';
+    renderWithContext(
+      <FoodItem id="1" name="Caesar Salad" price={12} description="Fresh salad" image={cloudinaryUrl} />
+    );
+    const image = screen.getByAltText('Caesar Salad');
+    expect(image).toHaveAttribute('src', cloudinaryUrl);
+  });
+
   test('renders food item container with correct class', () => {
     const { container } = renderWithContext(
       <FoodItem id="1" name="Caesar Salad" price={12} description="Fresh salad" image="salad.jpg" />

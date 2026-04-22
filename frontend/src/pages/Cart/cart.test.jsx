@@ -21,6 +21,7 @@ describe('Cart Page', () => {
     removeFromCart: vi.fn(),
     getTotalCartAmount: () => 0,
     url: 'http://localhost:4000',
+    token: '',
   };
 
   const renderWithContext = (ctx = {}) => {
@@ -107,9 +108,27 @@ describe('Cart Page', () => {
     renderWithContext({
       cartItems: { '1': 1 },
       getTotalCartAmount: () => 10,
+      token: 'test-token',
     });
     fireEvent.click(screen.getByText('PROCEED TO CHECKOUT'));
     expect(mockNavigate).toHaveBeenCalledWith('/order');
+  });
+
+  test('does not navigate to /order when user is not signed in', () => {
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderWithContext({
+      cartItems: { '1': 1 },
+      getTotalCartAmount: () => 10,
+      token: '',
+    });
+
+    fireEvent.click(screen.getByText('PROCEED TO CHECKOUT'));
+
+    expect(mockNavigate).not.toHaveBeenCalledWith('/order');
+    expect(alertSpy).toHaveBeenCalledWith('Please sign in to proceed to checkout.');
+
+    alertSpy.mockRestore();
   });
 
   test('renders promo code input', () => {
